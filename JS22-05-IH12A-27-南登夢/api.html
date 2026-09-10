@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>松阪市観光ガイド</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+h1 {
+    text-align: center;
+    background-color: #8B4513;
+    color: white;
+    margin: 0;
+    padding: 15px;
+}
+
+.intro {
+    text-align: center;
+    padding: 10px;
+    background-color: #f5f5f5;
+}
+
+#map {
+    width: 100%;
+    height: 500px;
+}
+
+#gallery {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    background-color: #eeeeee;
+    flex-wrap: wrap;
+}
+
+#gallery img {
+    width: 180px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.info img {
+    width: 220px;
+    height: 140px;
+    object-fit: cover;
+}
+</style>
+</head>
+
+<body>
+
+<h1>松阪市観光ガイド</h1>
+
+<div class="intro">
+歴史と文化が息づく松阪市のおすすめ観光スポットを紹介します。<br>
+マーカーをクリックすると詳細情報を見ることができます。
+</div>
+
+<div id="map"></div>
+
+<div id="gallery">
+    <img src="images/matsusaka_castle.jpg" alt="松阪城跡">
+    <img src="images/gojoban.jpg" alt="御城番屋敷">
+    <img src="images/bellfarm.jpg" alt="ベルファーム">
+    <img src="images/honkyoji.jpg" alt="本居宣長記念館">
+</div>
+
+<script>
+
+function initMap() {
+
+    // 松阪駅付近を中心に地図を表示
+    const map = new google.maps.Map(
+        document.getElementById("map"),
+        {
+            zoom: 13,
+            center: { lat: 34.5778, lng: 136.5276 }
+        }
+    );
+
+    // 観光スポットの情報
+    const spots = [
+
+        {
+            name: "松阪城跡",
+            lat: 34.5799,
+            lng: 136.5314,
+            image: "images/matsusaka_castle.jpg",
+            description: "松阪城跡は1588年に蒲生氏郷によって築かれた城跡です。現在は天守閣は残っていませんが、美しい石垣を見ることができます。春には桜の名所として多くの観光客が訪れます。高台からは松阪市街を一望できます。"
+        },
+
+        {
+            name: "御城番屋敷",
+            lat: 34.5780,
+            lng: 136.5301,
+            image: "images/gojoban.jpg",
+            description: "御城番屋敷は江戸時代に建てられた武士の住宅です。現在も当時の町並みが残されており、国の重要文化財に指定されています。歴史を感じながら散策できる人気スポットです。"
+        },
+
+        {
+            name: "松阪農業公園ベルファーム",
+            lat: 34.5420,
+            lng: 136.4927,
+            image: "images/bellfarm.jpg",
+            description: "松阪農業公園ベルファームは自然と食を楽しめる施設です。四季折々の花が咲き、家族連れにも人気があります。地元の特産品を販売するショップもあります。"
+        },
+
+        {
+            name: "本居宣長記念館",
+            lat: 34.5795,
+            lng: 136.5313,
+            image: "images/honkyoji.jpg",
+            description: "本居宣長記念館は松阪市出身の国学者である本居宣長を紹介する施設です。館内には宣長の著作や資料が展示されています。"
+        }
+
+    ];
+
+    // 配列の中の観光スポット分だけマーカーを作成する
+    spots.forEach(function(spot){
+
+        // マーカー作成
+        const marker = new google.maps.Marker({
+            position: {
+                lat: spot.lat,
+                lng: spot.lng
+            },
+            map: map,
+            title: spot.name
+        });
+
+        // 情報ウィンドウ作成
+        const infoWindow = new google.maps.InfoWindow({
+            content:
+            `
+            <div class="info">
+                <h3>${spot.name}</h3>
+                <img src="${spot.image}">
+                <p>${spot.description}</p>
+            </div>
+            `
+        });
+
+        // マーカーをクリックすると情報を表示
+        marker.addListener("click", function(){
+            infoWindow.open(map, marker);
+        });
+
+    });
+}
+
+</script>
+
+<script async
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAKLjisxFelKwIl1_G6MiEO9-ya7Twr5s&callback=initMap">
+</script>
+
+</body>
+</html>
